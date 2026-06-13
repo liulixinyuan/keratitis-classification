@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "task": {
+    "name": "six-class slit-lamp image classification",
+    "classes": ["NC", "BK", "FK", "VK", "NIFK", "AMK"],
+    "patient_id_rule": "filename prefix before the first underscore"
+  },
+  "training_defaults": {
+    "cross_validation_folds": 5,
+    "split_level": "patient",
+    "split_seed": 42,
+    "epochs": 50,
+    "batch_size": 128,
+    "optimizer": "AdamW",
+    "loss": "CrossEntropyLoss",
+    "label_smoothing": 0.05,
+    "class_weighting": false,
+    "balanced_sampling": false,
+    "focal_loss": false,
+    "mixed_precision": true,
+    "gradient_accumulation_steps": 1,
+    "early_stopping_patience": 24,
+    "model_selection_metric": "validation weighted one-vs-rest AUC"
+  },
+  "normalization": {
+    "imagenet": {
+      "mean": [0.485, 0.456, 0.406],
+      "std": [0.229, 0.224, 0.225]
+    },
+    "clip": {
+      "mean": [0.48145466, 0.4578275, 0.40821073],
+      "std": [0.26862954, 0.26130258, 0.27577711]
+    }
+  },
+  "augmentations": {
+    "cnn_moderate": {
+      "random_resized_crop": {"size": 224, "scale": [0.75, 1.0], "ratio": [0.9, 1.1]},
+      "horizontal_flip_probability": 0.5,
+      "vertical_flip_probability": 0.2,
+      "rotation_degrees": 15,
+      "color_jitter": {"brightness": 0.15, "contrast": 0.15, "saturation": 0.08, "hue": 0.02},
+      "normalization": "imagenet"
+    },
+    "inception_moderate": {
+      "random_resized_crop": {"size": 299, "scale": [0.75, 1.0], "ratio": [0.9, 1.1]},
+      "horizontal_flip_probability": 0.5,
+      "vertical_flip_probability": 0.2,
+      "rotation_degrees": 15,
+      "color_jitter": {"brightness": 0.15, "contrast": 0.15, "saturation": 0.08, "hue": 0.02},
+      "normalization": "imagenet"
+    },
+    "vit_light": {
+      "random_resized_crop": {"size": 224, "scale": [0.85, 1.0], "ratio": [0.95, 1.05]},
+      "horizontal_flip_probability": 0.5,
+      "rotation_degrees": 10,
+      "color_jitter": {"brightness": 0.1, "contrast": 0.1},
+      "normalization": "imagenet"
+    },
+    "dinov2_light": {
+      "random_resized_crop": {"size": 518, "scale": [0.85, 1.0], "ratio": [0.95, 1.05]},
+      "horizontal_flip_probability": 0.5,
+      "rotation_degrees": 8,
+      "color_jitter": {"brightness": 0.08, "contrast": 0.08},
+      "normalization": "imagenet"
+    },
+    "clip_light": {
+      "random_resized_crop": {"size": 224, "scale": [0.85, 1.0], "ratio": [0.95, 1.05]},
+      "horizontal_flip_probability": 0.5,
+      "rotation_degrees": 8,
+      "color_jitter": {"brightness": 0.08, "contrast": 0.08},
+      "normalization": "clip"
+    },
+    "clip_eval_only": {
+      "resize": [224, 224],
+      "normalization": "clip"
+    }
+  },
+  "models": {
+    "InceptionV3": {
+      "architecture": "torchvision inception_v3",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [299, 299],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "inception_moderate"}
+      }
+    },
+    "ResNet50": {
+      "architecture": "torchvision resnet50",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "ResNet18": {
+      "architecture": "torchvision resnet18",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "MobileNetV2": {
+      "architecture": "torchvision mobilenet_v2",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "DenseNet121": {
+      "architecture": "torchvision densenet121",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "ResNeXt50": {
+      "architecture": "torchvision resnext50_32x4d",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "RegNet": {
+      "architecture": "torchvision regnet_x_16gf",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "EfficientNet_B0": {
+      "architecture": "torchvision efficientnet_b0",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "ConvNeXT": {
+      "architecture": "torchvision convnext_base",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "cnn_moderate"}
+      }
+    },
+    "ViT": {
+      "architecture": "torchvision vit_b_16",
+      "pretrained_weights": "IMAGENET1K_V1",
+      "input_size": [224, 224],
+      "protocols": {
+        "full_finetune": {"learning_rate": 0.0001, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "vit_light"}
+      }
+    },
+    "DINOV2": {
+      "architecture": "timm vit_small_patch14_dinov2",
+      "pretrained_weights": "weights/dinov2/model.safetensors",
+      "input_size": [518, 518],
+      "protocols": {
+        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
+        "full_finetune": {"learning_rate": 0.00005, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "dinov2_light"}
+      }
+    },
+    "DINOv3_base": {
+      "architecture": "Hugging Face AutoModel with CLS-token classifier",
+      "pretrained_weights": "weights/dinov3",
+      "input_size": [518, 518],
+      "protocols": {
+        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
+        "full_finetune": {"learning_rate": 0.00002, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "dinov2_light"}
+      }
+    },
+    "CTransPath": {
+      "architecture": "timm vit_small_patch16_224 with CTransPath pretrained weights",
+      "pretrained_weights": "weights/ctranspath/ctranspath.pth",
+      "input_size": [224, 224],
+      "protocols": {
+        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "vit_light"},
+        "full_finetune": {"learning_rate": 0.0001, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "vit_light"}
+      }
+    },
+    "clip_prompt": {
+      "architecture": "CLIP ViT-B/32 prompt classifier",
+      "pretrained_weights": "weights/clip-vit-base-patch32",
+      "input_size": [224, 224],
+      "prompt_templates": [
+        "a slit-lamp photograph of {}.",
+        "a clinical slit-lamp image showing {}.",
+        "an anterior segment slit-lamp photograph diagnosed as {}.",
+        "a corneal disease slit-lamp image of {}.",
+        "a close-up slit-lamp photograph of the cornea showing {}."
+      ],
+      "protocols": {
+        "zero_shot": {"learning_rate": 0.0, "weight_decay": 0.0, "scheduler": "none", "augmentation": "clip_eval_only"},
+        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "clip_light"},
+        "full_finetune": {"learning_rate": 0.00001, "weight_decay": 0.02, "scheduler": "cosine", "augmentation": "clip_light"}
+      }
+    }
+  }
+}
