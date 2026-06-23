@@ -98,7 +98,14 @@ python data_augmentation.py \
 Training uses fixed-seed grouped five-fold cross-validation. Validation folds
 contain original images only; development-fold training uses original and
 offline-augmented images. Cross-entropy loss with label smoothing is used
-without class weighting, balanced sampling, or focal loss.
+without class weighting, balanced sampling, or focal loss. All benchmarked
+trainable models share the same optimization baseline: AdamW, learning rate
+`3e-4`, weight decay `1e-4`, and `ReduceLROnPlateau`. This unified baseline
+applies to the CNN backbones, ViT, DINOv2, DINOv3, CTransPath, and CLIP
+prompt-based models whenever they are trained (`linear_probe` or
+`full_finetune`). The only exception is CLIP `zero_shot`, which does not train
+model parameters and therefore skips the optimizer and scheduler. Model-
+specific input preprocessing and augmentation remain unchanged.
 
 ```bash
 python train.py \

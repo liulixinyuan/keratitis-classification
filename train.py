@@ -1225,37 +1225,22 @@ def get_training_config(model_name, protocol):
 
     if model_name == "ViT":
         config.update({
-            "learning_rate": 1e-4,
-            "weight_decay": 5e-2,
-            "scheduler": "cosine",
             "augmentation": "vit_light",
         })
     elif model_name == "DINOV2":
         config.update({
-            "learning_rate": 1e-3 if protocol == "linear_probe" else 5e-5,
-            "weight_decay": 1e-4 if protocol == "linear_probe" else 5e-2,
-            "scheduler": "plateau" if protocol == "linear_probe" else "cosine",
             "augmentation": "dinov2_light",
         })
     elif model_name == "DINOv3_base":
         config.update({
-            "learning_rate": 1e-3 if protocol == "linear_probe" else 2e-5,
-            "weight_decay": 1e-4 if protocol == "linear_probe" else 5e-2,
-            "scheduler": "plateau" if protocol == "linear_probe" else "cosine",
             "augmentation": "dinov2_light",
         })
     elif model_name == "CTransPath":
         config.update({
-            "learning_rate": 1e-3 if protocol == "linear_probe" else 1e-4,
-            "weight_decay": 1e-4 if protocol == "linear_probe" else 5e-2,
-            "scheduler": "plateau" if protocol == "linear_probe" else "cosine",
             "augmentation": "vit_light",
         })
     elif model_name == "clip_prompt":
         config.update({
-            "learning_rate": 1e-3 if protocol == "linear_probe" else 1e-5,
-            "weight_decay": 1e-4 if protocol == "linear_probe" else 2e-2,
-            "scheduler": "plateau" if protocol == "linear_probe" else "cosine",
             "augmentation": "clip_light",
         })
         if protocol == "zero_shot":

@@ -153,7 +153,7 @@
       "pretrained_weights": "IMAGENET1K_V1",
       "input_size": [224, 224],
       "protocols": {
-        "full_finetune": {"learning_rate": 0.0001, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "vit_light"}
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "vit_light"}
       }
     },
     "DINOV2": {
@@ -161,8 +161,8 @@
       "pretrained_weights": "weights/dinov2/model.safetensors",
       "input_size": [518, 518],
       "protocols": {
-        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
-        "full_finetune": {"learning_rate": 0.00005, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "dinov2_light"}
+        "linear_probe": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"}
       }
     },
     "DINOv3_base": {
@@ -170,8 +170,8 @@
       "pretrained_weights": "weights/dinov3",
       "input_size": [518, 518],
       "protocols": {
-        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
-        "full_finetune": {"learning_rate": 0.00002, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "dinov2_light"}
+        "linear_probe": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"},
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "dinov2_light"}
       }
     },
     "CTransPath": {
@@ -179,8 +179,8 @@
       "pretrained_weights": "weights/ctranspath/ctranspath.pth",
       "input_size": [224, 224],
       "protocols": {
-        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "vit_light"},
-        "full_finetune": {"learning_rate": 0.0001, "weight_decay": 0.05, "scheduler": "cosine", "augmentation": "vit_light"}
+        "linear_probe": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "vit_light"},
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "vit_light"}
       }
     },
     "clip_prompt": {
@@ -196,8 +196,8 @@
       ],
       "protocols": {
         "zero_shot": {"learning_rate": 0.0, "weight_decay": 0.0, "scheduler": "none", "augmentation": "clip_eval_only"},
-        "linear_probe": {"learning_rate": 0.001, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "clip_light"},
-        "full_finetune": {"learning_rate": 0.00001, "weight_decay": 0.02, "scheduler": "cosine", "augmentation": "clip_light"}
+        "linear_probe": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "clip_light"},
+        "full_finetune": {"learning_rate": 0.0003, "weight_decay": 0.0001, "scheduler": "plateau", "augmentation": "clip_light"}
       }
     }
   }
